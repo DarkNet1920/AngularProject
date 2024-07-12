@@ -1,0 +1,34 @@
+<form (ngSubmit)="onSubmit()">
+    <input type="text" [(ngModel)]="userInput" name="userInput" placeholder="Enter Full Name" required class="username">
+    <label for="workoutInput" class="listlabel">Click / Drag To Select Workout : </label>
+    <select [(ngModel)]="workoutInput" name="workoutInput" multiple (change)="updateSelectedCount($event)" required class="workoutlist">
+      <option *ngFor="let workout of workoutOptions" [value]="workout">{{ workout }}</option>
+    </select>
+    <input type="text" [(ngModel)]="timeInput" name="timeInput" placeholder="Time In Minutes" required class="time">
+    <button type="submit" class="add_btn">Add</button>
+  </form>
+  
+  <input type="text" [(ngModel)]="searchText" (input)="filterItems()" placeholder="Search User" class="f1">
+  <input type="text" [(ngModel)]="searchWorkout" (input)="filterItems()" placeholder="Search Workout" class="f2">
+  
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Workout(s)</th>
+        <th>Count</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of filteredItems | paginate: { itemsPerPage: pageSize, currentPage: currentPage }">
+        <td>{{ user.userInput }}</td>
+        <td>{{ user.workoutInput.join(', ') }}</td>
+        <td>{{ user.workoutInput.length }}</td>
+        <td>{{ user.timeInput }}</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+  
